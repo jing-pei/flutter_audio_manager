@@ -77,13 +77,31 @@ public class SwiftFlutterAudioManagerPlugin: NSObject, FlutterPlugin {
     }
     
     func changeToSpeaker() -> Bool{
-        try? AVAudioSession.sharedInstance().overrideOutputAudioPort(AVAudioSession.PortOverride.speaker)
-        return true;
+    //        try? AVAudioSession.sharedInstance().overrideOutputAudioPort(AVAudioSession.PortOverride.speaker)
+    //        return true;
+        do {
+            let session = AVAudioSession.sharedInstance()
+            try session.setCategory(AVAudioSession.Category.playAndRecord, options: [AVAudioSession.CategoryOptions.defaultToSpeaker, AVAudioSession.CategoryOptions.allowBluetooth]);
+            try session.setActive(true, options: AVAudioSession.SetActiveOptions.notifyOthersOnDeactivation)
+            return true;
+        } catch {
+            return false;
+        }
     }
+        
     
     func changeToReceiver() -> Bool{
-        return changeByPortType([AVAudioSession.Port.builtInMic])
+    //        return changeByPortType([AVAudioSession.Port.builtInMic])
+        do {
+            let session = AVAudioSession.sharedInstance()
+            try session.setCategory(AVAudioSession.Category.playAndRecord, options: [AVAudioSession.CategoryOptions.allowBluetooth])
+            try session.setActive(true, options: AVAudioSession.SetActiveOptions.notifyOthersOnDeactivation)
+            return true;
+        } catch {
+            return false;
+        }
     }
+    
     
     func changeToHeadphones() -> Bool{
         return changeByPortType([AVAudioSession.Port.headsetMic])
