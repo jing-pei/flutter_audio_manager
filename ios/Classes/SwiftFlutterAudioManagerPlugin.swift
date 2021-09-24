@@ -76,6 +76,7 @@ public class SwiftFlutterAudioManagerPlugin: NSObject, FlutterPlugin {
         return [input.portName,type];
     }
     
+    
     func changeToSpeaker() -> Bool{
     //        try? AVAudioSession.sharedInstance().overrideOutputAudioPort(AVAudioSession.PortOverride.speaker)
     //        return true;
