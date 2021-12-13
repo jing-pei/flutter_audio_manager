@@ -50,7 +50,11 @@ public class FlutterAudioManagerPlugin implements FlutterPlugin, MethodCallHandl
   static AudioEventListener listener = new AudioEventListener() {
     @Override
     public void onChanged() {
-      channel.invokeMethod("inputChanged", 1);
+      try {
+        if (channel != null) channel.invokeMethod("inputChanged", 1);
+      }catch (Exception e) {
+        e.printStackTrace();
+      }
     }
   };
 
