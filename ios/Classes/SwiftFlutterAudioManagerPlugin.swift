@@ -35,7 +35,6 @@ public class SwiftFlutterAudioManagerPlugin: NSObject, FlutterPlugin {
   }
   func getCurrentOutput() -> [String]  {
         let currentRoute = AVAudioSession.sharedInstance().currentRoute
-//        print("hello \(currentRoute.outputs)")
         for output in currentRoute.outputs {
             return getInfo(output);
         }
@@ -45,7 +44,6 @@ public class SwiftFlutterAudioManagerPlugin: NSObject, FlutterPlugin {
     func getAvailableInputs() -> [[String]]  {
         var arr = [[String]]()
         if let inputs = AVAudioSession.sharedInstance().availableInputs {
-//            print("availableInputs \(inputs.count)")
             for input in inputs {
                 arr.append(getInfo(input));
              }
@@ -54,7 +52,6 @@ public class SwiftFlutterAudioManagerPlugin: NSObject, FlutterPlugin {
     }
     
     func getInfo(_ input:AVAudioSessionPortDescription) -> [String] {
-//        print(input.portType)
         var type="0";
         let port = AVAudioSession.Port.self;
         switch input.portType {
@@ -78,11 +75,9 @@ public class SwiftFlutterAudioManagerPlugin: NSObject, FlutterPlugin {
     
     
     func changeToSpeaker() -> Bool{
-    //        try? AVAudioSession.sharedInstance().overrideOutputAudioPort(AVAudioSession.PortOverride.speaker)
-    //        return true;
         do {
             let session = AVAudioSession.sharedInstance()
-            try session.setCategory(AVAudioSession.Category.playAndRecord, options: [AVAudioSession.CategoryOptions.defaultToSpeaker, AVAudioSession.CategoryOptions.allowBluetooth]);
+            try session.setCategory(AVAudioSession.Category.playAndRecord, options: [AVAudioSession.CategoryOptions.defaultToSpeaker, AVAudioSession.CategoryOptions.allowBluetooth, AVAudioSession.CategoryOptions.duckOthers, AVAudioSession.CategoryOptions.mixWithOthers]);
             try session.setActive(true, options: AVAudioSession.SetActiveOptions.notifyOthersOnDeactivation)
             return true;
         } catch {
@@ -92,10 +87,9 @@ public class SwiftFlutterAudioManagerPlugin: NSObject, FlutterPlugin {
         
     
     func changeToReceiver() -> Bool{
-    //        return changeByPortType([AVAudioSession.Port.builtInMic])
         do {
             let session = AVAudioSession.sharedInstance()
-            try session.setCategory(AVAudioSession.Category.playAndRecord, options: [AVAudioSession.CategoryOptions.allowBluetooth])
+            try session.setCategory(AVAudioSession.Category.playAndRecord, options: [AVAudioSession.CategoryOptions.allowBluetooth, AVAudioSession.CategoryOptions.duckOthers, AVAudioSession.CategoryOptions.mixWithOthers])
             try session.setActive(true, options: AVAudioSession.SetActiveOptions.notifyOthersOnDeactivation)
             return true;
         } catch {
@@ -143,7 +137,6 @@ public class SwiftFlutterAudioManagerPlugin: NSObject, FlutterPlugin {
                 let reason = AVAudioSession.RouteChangeReason(rawValue:reasonValue) else {
                     return
             }
-            print("registerAudioRouteChangeBlock \(reason)");
             self.channel!.invokeMethod("inputChanged",arguments: 1)
         }
     }
