@@ -13,25 +13,28 @@ public class SwiftFlutterAudioManagerPlugin: NSObject, FlutterPlugin {
   }
 
   public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
-    if (call.method == "getCurrentOutput"){
-            result(getCurrentOutput())
-        }
-        else if(call.method == "getAvailableInputs"){
-            result(getAvailableInputs())
-        }
-        else if(call.method == "changeToSpeaker"){
-            result(changeToSpeaker())
-        }
-        else if(call.method == "changeToReceiver"){
-            result(changeToReceiver())
-        }
-        else if(call.method == "changeToHeadphones"){
-            result(changeToBluetooth())
-        }
-        else if(call.method == "changeToBluetooth"){
-            result(changeToBluetooth())
-        }
-        result("iOS " + UIDevice.current.systemVersion)
+      DispatchQueue.global().async {
+          if (call.method == "getCurrentOutput"){
+                  result(self.getCurrentOutput())
+          }
+          else if(call.method == "getAvailableInputs"){
+              result(self.getAvailableInputs())
+          }
+          else if(call.method == "changeToSpeaker"){
+              result(self.changeToSpeaker())
+          }
+          else if(call.method == "changeToReceiver"){
+              result(self.changeToReceiver())
+          }
+          else if(call.method == "changeToHeadphones"){
+              result(self.changeToBluetooth())
+          }
+          else if(call.method == "changeToBluetooth"){
+              result(self.changeToBluetooth())
+          } else {
+              result("iOS " + UIDevice.current.systemVersion)
+          }
+      }
   }
   func getCurrentOutput() -> [String]  {
         let currentRoute = AVAudioSession.sharedInstance().currentRoute
@@ -141,3 +144,4 @@ public class SwiftFlutterAudioManagerPlugin: NSObject, FlutterPlugin {
         }
     }
 }
+
