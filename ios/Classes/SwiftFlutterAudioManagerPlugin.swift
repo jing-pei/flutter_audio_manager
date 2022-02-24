@@ -79,9 +79,11 @@ public class SwiftFlutterAudioManagerPlugin: NSObject, FlutterPlugin {
     
     func changeToSpeaker() -> Bool{
         do {
+//            let session = AVAudioSession.sharedInstance()
+//            try session.setCategory(AVAudioSession.Category.playAndRecord, options: [AVAudioSession.CategoryOptions.defaultToSpeaker, AVAudioSession.CategoryOptions.allowBluetooth, AVAudioSession.CategoryOptions.duckOthers, AVAudioSession.CategoryOptions.mixWithOthers]);
+//            try session.setActive(true, options: AVAudioSession.SetActiveOptions.notifyOthersOnDeactivation)
             let session = AVAudioSession.sharedInstance()
-            try session.setCategory(AVAudioSession.Category.playAndRecord, options: [AVAudioSession.CategoryOptions.defaultToSpeaker, AVAudioSession.CategoryOptions.allowBluetooth, AVAudioSession.CategoryOptions.duckOthers, AVAudioSession.CategoryOptions.mixWithOthers]);
-            try session.setActive(true, options: AVAudioSession.SetActiveOptions.notifyOthersOnDeactivation)
+            try session.overrideOutputAudioPort(.speaker)
             return true;
         } catch {
             return false;
@@ -91,9 +93,13 @@ public class SwiftFlutterAudioManagerPlugin: NSObject, FlutterPlugin {
     
     func changeToReceiver() -> Bool{
         do {
+//            let session = AVAudioSession.sharedInstance()
+//            try session.setCategory(AVAudioSession.Category.playAndRecord, options: [AVAudioSession.CategoryOptions.allowBluetooth, AVAudioSession.CategoryOptions.duckOthers, AVAudioSession.CategoryOptions.mixWithOthers])
+//            try session.setActive(true, options: AVAudioSession.SetActiveOptions.notifyOthersOnDeactivation)
+            
             let session = AVAudioSession.sharedInstance()
-            try session.setCategory(AVAudioSession.Category.playAndRecord, options: [AVAudioSession.CategoryOptions.allowBluetooth, AVAudioSession.CategoryOptions.duckOthers, AVAudioSession.CategoryOptions.mixWithOthers])
-            try session.setActive(true, options: AVAudioSession.SetActiveOptions.notifyOthersOnDeactivation)
+            try session.overrideOutputAudioPort(.none)
+            
             return true;
         } catch {
             return false;
