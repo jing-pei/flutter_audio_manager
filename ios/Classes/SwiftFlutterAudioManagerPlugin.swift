@@ -82,8 +82,12 @@ public class SwiftFlutterAudioManagerPlugin: NSObject, FlutterPlugin {
 //            let session = AVAudioSession.sharedInstance()
 //            try session.setCategory(AVAudioSession.Category.playAndRecord, options: [AVAudioSession.CategoryOptions.defaultToSpeaker, AVAudioSession.CategoryOptions.allowBluetooth, AVAudioSession.CategoryOptions.duckOthers, AVAudioSession.CategoryOptions.mixWithOthers]);
 //            try session.setActive(true, options: AVAudioSession.SetActiveOptions.notifyOthersOnDeactivation)
-            let session = AVAudioSession.sharedInstance()
-            try session.overrideOutputAudioPort(.speaker)
+
+            let isConnectBLE = changeToBluetooth()
+            if(isConnectBLE == false) {
+                let session = AVAudioSession.sharedInstance()
+                try session.overrideOutputAudioPort(.speaker)
+            }
             return true;
         } catch {
             return false;
