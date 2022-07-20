@@ -6,26 +6,27 @@ enum AudioPort {
   unknow,
 
   /// input 1
-  receiver,
+  receiver, //听筒
 
   /// out speaker 2
-  speaker,
+  speaker, //扬声器
 
   /// headset 3
-  headphones,
+  headphones, //耳机
 
   /// bluetooth 4
-  bluetooth,
+  bluetooth, //蓝牙
 }
 
 class AudioInput {
   final String? name;
   final int _port;
+  final bool isSelected;
   AudioPort get port {
     return AudioPort.values[_port];
   }
 
-  const AudioInput(this.name, this._port);
+  const AudioInput(this.name, this._port, {this.isSelected = false});
 
   @override
   String toString() {
@@ -44,8 +45,29 @@ class FlutterAudioManager {
   }
 
   static Future<AudioInput> getCurrentOutput() async {
-    final List<dynamic> data = await (_channel.invokeMethod('getCurrentOutput'));
+    final List<dynamic> data =
+        await (_channel.invokeMethod('getCurrentOutput'));
     return AudioInput(data[0], int.parse(data[1]));
+  }
+
+  static Future<List<AudioInput>> getAllOutputDevices() async {
+    final List<dynamic> list =
+        await (_channel.invokeMethod('getAllOutputDevices'));
+    List<AudioInput> arr = [];
+    int port = 0;
+    list.forEach((device) {
+      if (device == "Bluetooth") {
+        port = 4;
+      } else if (device == "Headset") {
+        port = 3;
+      } else if (device == "Speaker") {
+        port = 2;
+      } else if (device == "Receiver") {
+        port = 1;
+      }
+      arr.add(AudioInput(device, port));
+    });
+    return arr;
   }
 
   static Future<List<AudioInput>> getAvailableInputs() async {
