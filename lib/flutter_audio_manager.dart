@@ -21,12 +21,12 @@ enum AudioPort {
 class AudioInput {
   final String? name;
   final int _port;
-  final bool isSelected;
+  bool isSelected;
   AudioPort get port {
     return AudioPort.values[_port];
   }
 
-  const AudioInput(this.name, this._port, {this.isSelected = false});
+  AudioInput(this.name, this._port, {this.isSelected = false});
 
   @override
   String toString() {
