@@ -1,6 +1,6 @@
 name: flutter_audio_manager
 description: The flutter_audio_manager listens to, gets and modifies audio input/output devices.
-version: 2.0.0+5
+version: 2.0.0+6
 homepage: https://github.com/yungzhu/flutter_audio_manager
 
 environment:
